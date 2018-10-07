@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
         })->everyMinute();
 
         // create new game
-        $chedule->call(function(){
+        $schedule->call(function(){
             
             $query = "BEGIN 
 
