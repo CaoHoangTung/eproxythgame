@@ -39,6 +39,21 @@ class Kernel extends ConsoleKernel
             ,1)->update(['number' => $str]);
             Log::info("Dices updated");
         })->everyMinute();
+
+        // create new game
+        $chedule->call(function(){
+            
+            $query = "BEGIN 
+
+            INSERT INTO txgame.games VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+300,0,FLOOR(RAND()*8+1),FLOOR(RAND()*8+1),FLOOR(RAND()*8+1),CURRENT_TIMESTAMP+200,CURRENT_TIMESTAMP+300);
+            
+            UPDATE txgame.constdata
+            SET data=CURRENT_TIMESTAMP
+            WHERE code ='gameId';
+            
+            END";
+            DB::raw($query);
+        })->cron("*/3 * * * *");
     }
 
     /**
