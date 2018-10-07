@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -56,7 +59,7 @@
                         @else
                             <li class="nav-item">
                                 <a id="navbar" class="nav-link" href="#" style="color: green">
-                                    Balance: {{ Auth::user()->balance }} 
+                                    Balance: <span class="mbalance">{{ Auth::user()->balance }}</span>
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
@@ -65,6 +68,12 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('profile') }}">
+                                        My profile 
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('game') }}">
+                                        Play game
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -87,4 +96,7 @@
         </main>
     </div>
 </body>
+
+@yield('script')
+
 </html>

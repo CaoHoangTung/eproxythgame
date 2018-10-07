@@ -1,32 +1,47 @@
+@extends('layouts.app')
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="{{asset('css/dice.css')}}">
-</head>
-<body>
-    <!-- <audio id="dice3d-sound" src="dist/nc93322.mp3"></audio> -->
-    <input id="number" type="number" value=2>
-    <button id="button-roll">roll</button>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+@section('content')
+    <div class="panel panel-primary" id="chat-box">
+        @foreach ($messages as $message)
+            <div class="panel-heading">
+                <i class="fa fa-user" aria-hidden="true"></i> 
+                {{ $message->user_id }}
+            </div>
+            <div class="box-chat">
+                <div class="user">
+                    <span class="message">{{ $message->message }}</span>
+                    <br>
+                    <span class="author-message"><b>Role</b></span>
+                </div>
+            </div>
+        @endforeach
+        <div class="panel-footer clearfix">
+            <form method="post" id="form-message" action="/message">
+            <div class="form-group">
+                <div class="input-group">
 
-    <script src="{{asset('js/dice.js')}}"></script>
-    <script>
-var button = document.getElementById('button-roll');
-var input = document.getElementById('button-roll');
-button.addEventListener('click', function(e) {
-    e.preventDefault();
-    var n = +document.getElementById('number').value;
-    var log = [];
-    for (var i = 0; i < n; ++i) {
-        var r = Math.floor(Math.random() * 6) + 1;
-        log.push(r);
-        dice3d(6, 1); // Animate 6 faces dice
-    }
-    console.log(log);
-});
+                    <input type="text" class="form-control" id = "message-content">
+                    
+                    <input type="hidden" value="{{Auth::id()}}">
+
+                    <div class="input-group-addon">
+                        <button type="submit" id="btn-send">SEND</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script src="{{asset('pusher-js/dist/web/pusher.min.js)')}}"</script>
+    <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{asset('js/chat.js')}}"></script>
+
+    <script type="text/javascript">
+        var chat = new chat();
+        chat.init();
     </script>
-</body>
-</html>
+@endsection

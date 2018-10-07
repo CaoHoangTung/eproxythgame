@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\DB;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,14 +25,25 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/bet', 'GameController@bet');
 Route::get('/api/getDices','GameController@getDices');
+Route::get('/api/phase','GameController@viewPhase');
 
 Route::get('/machine',function(){
     return view('machine');
 });
 
-Route::get('/lottery',function(){
-    return view('slotMachine');
-});
+Route::get('/game','GameController@index')->name('game');
+Route::post('/game/bet', 'GameController@bet');
 
+Route::get('/profile','ProfileController@index')->name('profile');
+
+Route::get('/message',function(){
+    return view('test',['messages'=>[]]);
+});
+Route::post('/message','MessageController@store');
+
+Route::get('/test',function(){
+    $email="cht@gmail.com";
+    $gameId = "123";
+    $amount = 1;
+});

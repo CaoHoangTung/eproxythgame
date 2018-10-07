@@ -1,3 +1,11 @@
+import Echo from "laravel-echo"
+
+window.Pusher = require('pusher-js');
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'd3f1f8d88a64bab85a19'
+});
 
 window._ = require('lodash');
 window.Popper = require('popper.js').default;

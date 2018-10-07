@@ -1,7 +1,5 @@
 <script src='//static.codepen.io/assets/editor/live/console_runner-ce3034e6bde3912cc25f83cccb7caa2b0f976196f2f2d52303a462c826d54a73.js'></script>
 <script src='//static.codepen.io/assets/editor/live/css_live_reload_init-e9c0cc5bb634d3d14b840de051920ac153d7d3d36fb050abad285779d7e5e8bd.js'></script>
-<!-- <meta charset='UTF-8'> -->
-<!-- <meta name="robots" content="noindex"> -->
 
 <link rel="stylesheet" href="{{asset('css/slotMachine.css')}}">
 
@@ -43,10 +41,7 @@
         <div></div>
         <div></div>
     </div>
-    <div class="slotnote">
-        <p>The number will be automatically update. Click here to retry to fetch the result</p>
-        <button href="#" class="spinBtn" onclick="spin()" >Spin</button>
-    </div>
+
     </div>
 
     <div class="salute"></div>
@@ -58,6 +53,7 @@
 <script >
 
     $(document).ready(function () {
+        var spinned = false;
         var isAnimate = false,
         randomNum,
         winNums = [],
@@ -69,12 +65,11 @@
                 isAnimate = true;
                 salute.removeClass("active");
                 $(this).addClass("active");
-                var dices = data['dices'].split(",");
+                var dices = data['dices'];
                 for (var i = 0; i < 3; i++) {
                     if (window.CP.shouldStopExecution(0)) break;
                     randomNum = dices[i];
-          
-                    console.log(randomNum);
+        
                     winNums[i] = randomNum;
                     for (var j = 0; j < 9; j++) {
                         if (window.CP.shouldStopExecution(1)) break;
@@ -90,39 +85,38 @@
                     salute.addClass("active");
                     }
                 }, 8000);
+            spinned = true;
         }
 
-        function spin(){
-            if (!isAnimate) {
-                var arr = [];
-                $.ajax({
-                    url: '/api/getDices',
-                    method: 'get',
-                    success: function(res){
-                        console.log(res);
-                        var arr = [];
-                        arr['dices'] = res;
-                        // spin
-                        spinAnimation(arr);
-                    },
-                    error: function(){
-                        // show error
-                        alert('Connection problem. Please try again later');
-                    }
-                });
+        function spin(data){
 
-                
+            if (!isAnimate) {
+                spinAnimation(data);                
             }
         }
         
-        setTimeout(() => {
-            spin();
-        }, 1000);
+        setInterval(() => {
+            $.ajax({
+                url: 'api/phase',
+                method: 'get',
+                success: function(res){
+                    var json = JSON.parse(res);
+                    if (json.phase ==="Spin Phase"){
+                        let arr = [];
+                        arr['dices'] = json.dices;
+                        if (arr['dices'] !== null && !spinned)
+                            spin(arr);
+                    }
+                    else if (json.phase === "Bet Phase")
+                        spinned = false;
+                },
+                error: function(res){
+                    console.log("CONNECTION ERROR");
+                    console.log(res);
+                }
+            });
+        }, 6000);
         
-
-        $(".spin_btn").on("click", function () {
-            spin();
-        });
     });
 
 </script>
