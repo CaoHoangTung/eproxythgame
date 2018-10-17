@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Http\Controllers\GameController;
 
 class Kernel extends ConsoleKernel
 {
@@ -40,18 +41,19 @@ class Kernel extends ConsoleKernel
             Log::info("Dices updated");
         })->everyMinute();
 
+        // distribute prize
+        $g = new GameController();
+        $g->distributePrize();
+
         // create new game
         $schedule->call(function(){
             
-            $query = "BEGIN 
-
+            $query = "
             INSERT INTO txgame.games VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+300,0,FLOOR(RAND()*8+1),FLOOR(RAND()*8+1),FLOOR(RAND()*8+1),CURRENT_TIMESTAMP+200,CURRENT_TIMESTAMP+300);
-            
+
             UPDATE txgame.constdata
             SET data=CURRENT_TIMESTAMP
-            WHERE code ='gameId';
-            
-            END";
+            WHERE code ='gameId';";
             DB::raw($query);
         })->cron("*/3 * * * *");
     }

@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\GameController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,8 +43,11 @@ Route::get('/message',function(){
 });
 Route::post('/message','MessageController@store');
 
-Route::get('/test',function(){
-    $email="cht@gmail.com";
-    $gameId = "123";
-    $amount = 1;
+Route::get('/d',function(){
+    app('App\Http\Controllers\GameController')->distributePrize();
 });
+
+Route::get('/test',function(){
+    
+});
+

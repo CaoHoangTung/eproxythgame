@@ -19,6 +19,8 @@
             <li class="list-group-item text-right"><a href="#"><span class="pull-left"><strong>Basic info</strong></span></a></li>
             <li class="list-group-item text-right"><a href="#"><span class="pull-left"><strong>Change password</strong></span></a></li>
             <li class="list-group-item text-right"><a href="#"><span class="pull-left"><strong>Two Factor Authentication</strong></span></a></li>
+            <li class="list-group-item text-right"><a href="#"><span class="pull-left"><strong>Deposit</strong></span></a></li>
+            <li class="list-group-item text-right"><a href="#"><span class="pull-left"><strong>Withdraw</strong></span></a></li>
           </ul> 
           
         </div><!--/col-3-->
@@ -40,7 +42,7 @@
                           
                           <div class="col-xs-6">
                               <label for="phone"><h4>Phone number</h4></label>
-                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
+                              <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone" title="enter your phone number if any.">
                           </div>
                       </div>
 
@@ -49,6 +51,14 @@
                           <div class="col-xs-6">
                               <label for="email"><h4>Email</h4></label>
                               <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="ethaddress"><h4>ETH Address</h4></label>
+                              <input type="text" class="form-control" name="ethaddress" id="email" placeholder="0x..." title="enter your email.">
                           </div>
                       </div>
 

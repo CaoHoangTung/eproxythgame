@@ -60,6 +60,8 @@
             </div>
             <div class='col-lg-4 col-sm-12 bet-section'>
                 <h4>Make your bet</h4>
+                <p>Select your lucky number, then click on of the button to place your bet</p>
+                <input type="number" id="inputNumber" class="form-control" placeholder="111 to 888" required/>
                 <button style="margin-bottom: 10px" class="btn btn-success">1</button>
                 <button style="margin-bottom: 10px" class="btn btn-success">2</button>
                 <button style="margin-bottom: 10px" class="btn btn-success">5</button>
@@ -85,17 +87,10 @@
         </div>
     </div>
 
-    <style>
-        .values{
-            text-align: center;
-        }
-        .mbalance{
-            color: green;
-        }
+@endsection
 
-    </style>
-
-    <script>
+@section('script')
+<script>
         $(document).ready(function(){
             function confirmBet(number,amount){
                 var prevBalance = ($('.mbalance:last').text());
@@ -122,12 +117,16 @@
                         else{
                             $('.mbalance').text(prevBalance);
                             var msg = "";
-                            if (res == "game_expired")
+                            if (res == "game_expired"){
                                 msg = "This game has ended";
+                                location.reload();
+                            }
                             else if (res == "bet_phase_only")
                                 msg = "Bet Phase has passed. Please wait until next game";
                             else if (res == "balance_too_low")
                                 msg = "Insufficient balance";
+                            else if (res == "invalid")
+                                msg = "Only numbers from 111 to 888 are allowed"
                             else   
                                 msg = "Error";
                             alert(msg);
@@ -137,15 +136,14 @@
                         console.log(res);
                         console.log("Session expired. Refresh the page and try again");
                         $('.mbalance').text(prevBalance);
-                        document.reload();
+                        // location.reload();
                     }
                 });
             }
             
             $('.bet-section button').on('click',function(){
                 var amount = parseInt($(this).text());
-                var number = 111;
-
+                var number = parseInt($('#inputNumber').val());
                 confirmBet(number,amount);
             });
         });
@@ -205,10 +203,23 @@
         iframe.height="200px";
         $('#machine').append(iframe); // add it to wherever you need it in the document
     </script>
+@endsection
 
+@section('style')
     <style>
         body{
             font-family: Arial;
+        }
+        #inputNumber{
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .values{
+            text-align: center;
+        }
+        .mbalance{
+            color: green;
         }
     </style>
 @endsection

@@ -98,5 +98,6 @@
 </body>
 
 @yield('script')
+@yield('style')
 
 </html>
